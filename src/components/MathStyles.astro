@@ -1,13 +1,13 @@
 ---
 /**
- * KaTeX stylesheet loader.
+ * KaTeX 样式加载器。
  *
- * Importing the stylesheet inside this component (rather than globally
- * in `BaseLayout` or `global.css`) means Astro will only emit the CSS
- * link on pages that actually render `<MathStyles />`. The component
- * is rendered conditionally from `PostLayout` / `PageLayout` based on
- * the `math: true` frontmatter flag, so non-math pages never download
- * the ~25 kB stylesheet (or its woff2 font assets).
+ * 将样式表放在这个组件内引入，而不是全局放在 `BaseLayout`
+ * 或 `global.css` 中，意味着 Astro 只会在真正渲染 `<MathStyles />`
+ * 的页面输出这条 CSS link。该组件会根据 frontmatter 中的
+ * `math: true` 由 `PostLayout` / `PageLayout` 按需渲染，
+ * 因此没有数学公式的页面不会下载这份约 25 kB 的样式
+ * 以及对应的 woff2 字体资源。
  */
 import 'katex/dist/katex.min.css';
 ---

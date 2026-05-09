@@ -28,7 +28,7 @@ Selon votre utilisation du site, nous pouvons traiter :
 - Donnees fournies directement : email ou contenu du message lorsque vous nous
   contactez.
 - Donnees de commentaires (si active) : profil et metadonnees de commentaire
-  gerees par **[FOURNISSEUR_COMMENTAIRES, ex. Giscus/GitHub]**.
+  gerees par **[FOURNISSEUR_COMMENTAIRES, ex. Twikoo]**.
 
 ## 3. Comment nous utilisons les donnees
 

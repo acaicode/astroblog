@@ -27,16 +27,16 @@ interface BuildSeoArgs {
   modifiedTime?: Date;
   tags?: string[];
   /**
-   * Restrict hreflang alternates to a subset of locales. Used on post
-   * pages where a translation may be missing.
+   * 将 hreflang alternates 限制在指定 locale 子集内。
+   * 主要用于文章页，因为某些文章可能没有完整翻译。
    */
   availableLocales?: readonly Locale[];
 }
 
-/** Build the SEO data block consumed by `<SEO />`. */
+/** 构建 `<SEO />` 所消费的 SEO 数据块。 */
 export function buildSeo(args: BuildSeoArgs): SeoMeta {
   return {
-    title: args.title && args.title !== SITE.title ? `${args.title} — ${SITE.title}` : SITE.title,
+    title: args.title && args.title !== SITE.title ? `${args.title} 鈥?${SITE.title}` : SITE.title,
     description: args.description ?? SITE.description,
     canonical: new URL(args.fullPath, SITE.url).toString(),
     ogImage: new URL(withBase(args.ogImage ?? SITE.defaultOgImage), SITE.url).toString(),

@@ -1,8 +1,7 @@
 ---
 /**
- * Chirpy-style fixed left sidebar: avatar + site title + tagline,
- * uppercase vertical nav with icon bullets, theme toggle + social
- * pinned to the bottom.
+ * Chirpy 风格的固定左侧边栏：头像、站点标题、副标题、
+ * 大写纵向导航、主题切换和底部固定的社交入口。
  */
 
 import { SITE, NAV, SOCIALS, type Locale } from '../config';
@@ -31,7 +30,7 @@ const navItems = NAV.map((item) => ({
 ---
 
 <aside id="sidebar" class="chirpy-sidebar" aria-label="Sidebar">
-  {/* Profile */}
+  {/* 个人信息区 */}
   <header class="flex w-full flex-col items-center pt-4 pb-6 text-center">
     <a href={home} class="flex flex-col items-center" aria-label={SITE.title}>
       <span
@@ -79,7 +78,7 @@ const navItems = NAV.map((item) => ({
     }
   </header>
 
-  {/* Vertical nav */}
+  {/* 纵向导航 */}
   <nav class="chirpy-nav flex-1" aria-label="Main">
     <ul class="contents flex-col gap-0.5">
       {
@@ -106,7 +105,7 @@ const navItems = NAV.map((item) => ({
     </ul>
   </nav>
 
-  {/* Bottom row: theme toggle + socials */}
+  {/* 底部区域：主题切换 + 社交链接 */}
   <div
     class="border-base-300 mt-4 flex w-full flex-wrap items-center justify-center gap-2 border-t pt-4"
   >
@@ -127,7 +126,7 @@ const navItems = NAV.map((item) => ({
   </div>
 </aside>
 
-{/* Mobile backdrop */}
+{/* 移动端遮罩层 */}
 <button
   type="button"
   data-sidebar-mask
@@ -162,16 +161,15 @@ const navItems = NAV.map((item) => ({
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') close();
     });
-    // Close when clicking a sidebar link on mobile
+    // 移动端点击侧边栏链接后自动关闭
     sidebar.querySelectorAll('a').forEach((a) =>
       a.addEventListener('click', () => {
         if (window.matchMedia('(max-width: 1023px)').matches) close();
       }),
     );
   }
-  // `astro:page-load` fires on the initial load too (when ClientRouter is
-  // present), so we only bind here. Calling setupSidebar() additionally at
-  // module top-level would double-bind handlers and make the toggle a no-op
-  // on the first page (open + close fire on the same click).
+  // `astro:page-load` 在首次加载时也会触发（启用 ClientRouter 时同样如此），
+  // 所以只在这里绑定即可。如果在模块顶层再额外调用 setupSidebar()，
+  // 会导致事件重复绑定，进而让首次点击时出现开和关同时触发的问题。
   document.addEventListener('astro:page-load', setupSidebar);
 </script>

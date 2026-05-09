@@ -1,12 +1,12 @@
 /* global URL */
 /**
- * i18n utilities.
+ * i18n 工具函数。
  *
- * Routing rules:
- *  - EN is the default locale and serves at the URL root with NO prefix.
- *  - FR is served under `/fr/...`.
+ * 路由规则：
+ *  - EN 是默认 locale，直接挂在根路径，不带前缀。
+ *  - FR 挂在 `/fr/...` 下。
  *
- * Source-of-truth: `src/config.ts` -> SITE.locales / SITE.defaultLocale.
+ * 唯一配置来源：`src/config.ts` -> `SITE.locales` / `SITE.defaultLocale`。
  */
 
 import { SITE, type Locale } from '../config';
@@ -14,13 +14,12 @@ import { messages, type UIKey } from './ui';
 
 const DEFAULT_LOCALE: Locale = SITE.defaultLocale;
 
-/** Configured base path (no trailing slash). E.g. '/chirping-astro' or ''. */
+/** 配置中的 base path（无尾部斜杠），例如 `/chirping-astro` 或空字符串。 */
 const BASE = (import.meta.env.BASE_URL ?? '/').replace(/\/+$/, '');
 
 /**
- * Prefix an absolute path with the configured `base`. Safe to call with
- * already-prefixed paths (it won't double up) or with empty/relative
- * paths (returned unchanged).
+ * 给绝对路径补上配置中的 `base` 前缀。
+ * 对已带前缀的路径不会重复拼接；空路径和相对路径会原样返回。
  */
 export function withBase(path: string): string {
   if (!path || !path.startsWith('/')) return path;
@@ -29,20 +28,19 @@ export function withBase(path: string): string {
   return `${BASE}${path}`;
 }
 
-/** Returns the leading locale prefix or '' for the default locale. */
+/** 返回 locale 前缀；默认 locale 返回空字符串。 */
 export function localePrefix(locale: Locale): string {
   return locale === DEFAULT_LOCALE ? '' : `/${locale}`;
 }
 
 /**
- * Build a localized URL for the given pathname (without locale prefix).
+ * 为给定 pathname 生成本地化 URL（输入路径本身不带 locale 前缀）。
  *
  *   localizedPath('/posts/foo', 'en') -> '/posts/foo'
  *   localizedPath('/posts/foo', 'fr') -> '/fr/posts/foo'
  *   localizedPath('/', 'fr')          -> '/fr/'
  *
- * The configured `base` (e.g. `/chirping-astro`) is automatically
- * prefixed when set.
+ * 当配置了 `base`（例如 `/chirping-astro`）时，会自动补上。
  */
 export function localizedPath(path: string, locale: Locale): string {
   const cleaned = path.startsWith('/') ? path : `/${path}`;
@@ -52,9 +50,9 @@ export function localizedPath(path: string, locale: Locale): string {
 }
 
 /**
- * Detect the current locale from a URL or Astro.url.pathname.
- * Anything starting with `/fr` or `/fr/` resolves to 'fr'; otherwise
- * the default locale is returned.
+ * 从 URL 或 Astro.url.pathname 中识别当前 locale。
+ * 只要路径以 `/fr` 或 `/fr/` 开头，就返回 `fr`；
+ * 否则返回默认 locale。
  */
 export function detectLocale(pathname: string): Locale {
   const p = stripBase(pathname);
@@ -67,7 +65,7 @@ export function detectLocale(pathname: string): Locale {
   return DEFAULT_LOCALE;
 }
 
-/** Strip the configured base path prefix from a pathname. */
+/** 从 pathname 中去掉配置的 base path 前缀。 */
 function stripBase(pathname: string): string {
   if (!BASE) return pathname;
   if (pathname === BASE) return '/';
@@ -76,7 +74,7 @@ function stripBase(pathname: string): string {
 }
 
 /**
- * Strip the locale prefix from a pathname so it can be relocalized.
+ * 从 pathname 中移除 locale 前缀，以便重新本地化。
  *
  *   stripLocale('/fr/posts/foo')  -> '/posts/foo'
  *   stripLocale('/posts/foo')     -> '/posts/foo'
@@ -93,8 +91,8 @@ export function stripLocale(pathname: string): string {
 }
 
 /**
- * Translation helper. Returns the localized string for the given key,
- * falling back to the default locale, then to the key itself.
+ * 翻译辅助函数。优先返回当前 locale 的文案，
+ * 不存在时回退到默认 locale，再不行就返回 key 本身。
  *
  *   const t = useTranslations('fr');
  *   t('nav.home') // 'Accueil'
@@ -108,7 +106,7 @@ export function useTranslations(locale: Locale): (key: UIKey) => string {
 }
 
 /**
- * Locale-aware date formatter.
+ * 按 locale 格式化日期。
  */
 export function formatDate(
   date: Date | string,
@@ -122,20 +120,20 @@ export function formatDate(
   return new Intl.DateTimeFormat(lang, options).format(d);
 }
 
-/** Short ISO 8601 date used for <time datetime="..."> attributes. */
+/** 用于 `<time datetime="...">` 的简短 ISO 8601 日期。 */
 export function isoDate(date: Date | string): string {
   const d = typeof date === 'string' ? new Date(date) : date;
   return Number.isNaN(d.getTime()) ? '' : d.toISOString();
 }
 
 /**
- * Map a "logical" path through every supported locale to power
- * <link rel="alternate" hreflang="..."> SEO tags.
+ * 将“逻辑路径”映射到所有支持的 locale，
+ * 用于生成 `<link rel="alternate" hreflang="...">` SEO 标签。
  *
- * `pathWithoutLocale` should be the canonical path WITHOUT locale prefix
- * (e.g. '/posts/welcome' for both EN and FR). Pass `availableLocales` to
- * limit the output to a subset (e.g. when a post has no translation
- * sibling in another locale).
+ * `pathWithoutLocale` 应该是不带 locale 前缀的 canonical 路径，
+ * 例如 EN 和 FR 都传 `/posts/welcome`。
+ * 如需限制输出范围，可传 `availableLocales`，
+ * 例如某篇文章没有其他语言版本时只输出已有 locale。
  */
 export function alternates(
   pathWithoutLocale: string,
@@ -149,8 +147,8 @@ export function alternates(
     locale,
     href: new URL(localizedPath(pathWithoutLocale, locale), SITE.url).toString(),
   }));
-  // x-default points at the default locale only when it's actually
-  // available for this path; otherwise drop it.
+  // 只有当默认 locale 对当前路径确实可用时，才输出 x-default；
+  // 否则就不生成。
   if (locales.includes(DEFAULT_LOCALE)) {
     list.push({
       locale: 'x-default',
@@ -160,23 +158,23 @@ export function alternates(
   return list;
 }
 
-/** Compute the canonical URL for a localized path. */
+/** 计算某个本地化路径对应的 canonical URL。 */
 export function canonicalUrl(pathname: string): string {
   return new URL(pathname, SITE.url).toString();
 }
 
-/** Pretty label for the language switcher. */
+/** 生成语言切换器显示用的友好标签。 */
 export function localeLabel(locale: Locale): string {
   switch (locale) {
     case 'fr':
-      return 'Français';
+      return 'Fran莽ais';
     case 'en':
     default:
       return 'English';
   }
 }
 
-/** ISO BCP 47 language tag for `<html lang>` and date formatters. */
+/** 用于 `<html lang>` 和日期格式化的 ISO BCP 47 语言标签。 */
 export function htmlLang(locale: Locale): string {
   switch (locale) {
     case 'fr':

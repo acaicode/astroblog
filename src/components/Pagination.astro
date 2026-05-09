@@ -6,7 +6,7 @@ import { Icon } from 'astro-icon/components';
 interface Props {
   currentPage: number;
   lastPage: number;
-  /** Function that returns the URL for a given page number. */
+  /** 返回指定页码对应 URL 的函数。 */
   // eslint-disable-next-line no-unused-vars
   hrefForPage: (page: number) => string;
   locale: Locale;
@@ -20,16 +20,16 @@ if (lastPage <= 1) return null;
 const prev = currentPage > 1 ? hrefForPage(currentPage - 1) : null;
 const next = currentPage < lastPage ? hrefForPage(currentPage + 1) : null;
 
-// Compact paginator: first, current-1, current, current+1, last (with ellipses).
-const numbers: Array<number | '…'> = [];
-const push = (n: number | '…') => {
+// 紧凑分页器：第一页、当前页前一页、当前页、当前页后一页、最后一页（必要时插入省略号）。
+const numbers: Array<number | '...'> = [];
+const push = (n: number | '...') => {
   if (numbers[numbers.length - 1] !== n) numbers.push(n);
 };
 push(1);
-if (currentPage - 1 > 2) push('…');
+if (currentPage - 1 > 2) push('...');
 for (let p = Math.max(2, currentPage - 1); p <= Math.min(lastPage - 1, currentPage + 1); p++)
   push(p);
-if (currentPage + 1 < lastPage - 1) push('…');
+if (currentPage + 1 < lastPage - 1) push('...');
 if (lastPage > 1) push(lastPage);
 ---
 
@@ -54,8 +54,8 @@ if (lastPage > 1) push(lastPage);
   <ul class="join">
     {
       numbers.map((n) =>
-        n === '…' ? (
-          <li class="join-item btn btn-ghost btn-sm pointer-events-none">…</li>
+        n === '...' ? (
+          <li class="join-item btn btn-ghost btn-sm pointer-events-none">...</li>
         ) : (
           <li>
             <a

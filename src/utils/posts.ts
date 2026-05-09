@@ -1,12 +1,12 @@
 /**
- * Post helpers.
+ * 文章辅助函数。
  *
- * Wraps the `astro:content` collection API to:
- *  - filter drafts in production
- *  - infer locale from filesystem path (posts/en/foo -> 'en')
- *  - sort by pubDate desc, with pinned posts first
- *  - group posts by tag / category / month
- *  - resolve translation siblings via `translationKey`
+ * 对 `astro:content` collection API 做了一层封装，用来：
+ *  - 在生产环境过滤 draft
+ *  - 从文件路径推导 locale（例如 posts/en/foo -> 'en'）
+ *  - 按 pubDate 倒序排序，并让置顶文章优先
+ *  - 按 tag / category / month 分组
+ *  - 通过 `translationKey` 解析互译文章
  */
 
 import { getCollection, type CollectionEntry } from 'astro:content';
@@ -22,14 +22,14 @@ export type Post = CollectionEntry<'posts'> & {
 const isProd = import.meta.env.PROD;
 const skipPostCollections = import.meta.env.CI_SKIP_CONTENT_COLLECTIONS === 'true';
 
-/** Derive the locale from `posts/<locale>/foo` slug-ish ID. */
+/** 从 `posts/<locale>/foo` 这种 ID 中推导 locale。 */
 function localeFromId(id: string): Locale {
   const seg = id.split(/[\\/]/)[0];
   if (seg && (SITE.locales as readonly string[]).includes(seg)) return seg as Locale;
   return SITE.defaultLocale;
 }
 
-/** Strip locale prefix from a content ID. */
+/** 从内容 ID 中移除 locale 前缀。 */
 function stripLocaleFromId(id: string): string {
   const segs = id.split(/[\\/]/);
   if (segs[0] && (SITE.locales as readonly string[]).includes(segs[0])) {
@@ -38,7 +38,7 @@ function stripLocaleFromId(id: string): string {
   return id;
 }
 
-/** Normalize a post entry: ensure `lang` and `translationKey` are set. */
+/** 标准化文章条目，确保 `lang` 和 `translationKey` 都存在。 */
 function normalize(entry: CollectionEntry<'posts'>): Post {
   const lang = entry.data.lang ?? localeFromId(entry.id);
   const translationKey = entry.data.translationKey ?? stripLocaleFromId(entry.id);
@@ -48,12 +48,12 @@ function normalize(entry: CollectionEntry<'posts'>): Post {
   } as Post;
 }
 
-/** Public slug used for the URL: filename minus locale and extension. */
+/** 生成对外 URL 使用的 slug：去掉 locale 和扩展名后的文件名。 */
 export function postSlug(entry: Post): string {
   return stripLocaleFromId(entry.id).replace(/\.(md|mdx)$/i, '');
 }
 
-/** Full localized URL path for a post. */
+/** 生成文章的完整本地化 URL 路径。 */
 export function postPath(entry: Post): string {
   const slug = postSlug(entry);
   const path =
@@ -63,7 +63,7 @@ export function postPath(entry: Post): string {
   return withBase(path);
 }
 
-/** Sort posts: pinned first, then by pubDate desc. */
+/** 文章排序：先按 pinned，再按 pubDate 倒序。 */
 export function sortPosts(posts: Post[]): Post[] {
   return [...posts].sort((a, b) => {
     if (a.data.pinned !== b.data.pinned) return a.data.pinned ? -1 : 1;
@@ -74,11 +74,11 @@ export function sortPosts(posts: Post[]): Post[] {
 }
 
 /**
- * Sort posts strictly by `pubDate` (newest first), ignoring `pinned`.
+ * 严格按 `pubDate` 排序（最新在前），忽略 `pinned`。
  *
- * Used for prev/next post navigation: pinned posts shouldn't yank the
- * latest entry to position 0 and break the chronological chain (which
- * would label a newer post as "Previous" of an older pinned post).
+ * 这个排序用于上一篇 / 下一篇导航：
+ * 置顶文章不应该把最新文章硬拉到第 0 位，破坏真实时间顺序，
+ * 否则会出现较新的文章被标成旧文章“上一篇”的问题。
  */
 export function sortPostsByDate(posts: Post[]): Post[] {
   return [...posts].sort((a, b) => {
@@ -88,7 +88,7 @@ export function sortPostsByDate(posts: Post[]): Post[] {
   });
 }
 
-/** Get all posts for a locale (drafts hidden in prod, sorted). */
+/** 获取某个 locale 下的所有文章（生产环境隐藏 draft，并完成排序）。 */
 export async function getPosts(locale: Locale): Promise<Post[]> {
   if (skipPostCollections) return [];
   const all = await getCollection('posts', (entry) => {
@@ -99,13 +99,13 @@ export async function getPosts(locale: Locale): Promise<Post[]> {
   return sortPosts(all.map(normalize));
 }
 
-/** Find a single post by locale + slug (path-relative). */
+/** 按 locale + slug 查找单篇文章。 */
 export async function getPostBySlug(locale: Locale, slug: string): Promise<Post | undefined> {
   const posts = await getPosts(locale);
   return posts.find((p) => postSlug(p) === slug);
 }
 
-/** All translation siblings of a post (other locales sharing translationKey). */
+/** 获取一篇文章的所有互译版本（共享 translationKey 的其他 locale）。 */
 export async function getTranslations(entry: Post): Promise<Record<Locale, Post | undefined>> {
   const out: Partial<Record<Locale, Post | undefined>> = {};
   for (const locale of SITE.locales) {
@@ -119,7 +119,7 @@ export async function getTranslations(entry: Post): Promise<Record<Locale, Post 
   return out as Record<Locale, Post | undefined>;
 }
 
-/** Tags for a locale, with counts, sorted by count desc then alpha. */
+/** 获取某个 locale 的标签及计数，先按数量倒序，再按字母序。 */
 export async function getTagsWithCount(
   locale: Locale,
 ): Promise<Array<{ name: string; count: number }>> {
@@ -133,7 +133,7 @@ export async function getTagsWithCount(
     .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
 }
 
-/** Categories for a locale, with counts. */
+/** 获取某个 locale 的分类及计数。 */
 export async function getCategoriesWithCount(
   locale: Locale,
 ): Promise<Array<{ name: string; count: number }>> {
@@ -147,7 +147,7 @@ export async function getCategoriesWithCount(
     .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
 }
 
-/** Group posts by year -> month for the archives page. */
+/** 为 archives 页面按 year -> month 对文章分组。 */
 export function groupByYearMonth(
   posts: Post[],
   locale: Locale,
@@ -183,37 +183,37 @@ export function groupByYearMonth(
 }
 
 /**
- * Resolve whether a post should display its featured (hero) image,
- * considering the per-post override (`showFeaturedImage`) and the
- * site-wide default (`SITE.showFeaturedImages`).
+ * 判断文章是否应该显示 featured（hero）图片，
+ * 同时考虑单篇覆盖项 `showFeaturedImage`
+ * 与全站默认值 `SITE.showFeaturedImages`。
  *
- * Returns `false` when there is no `heroImage` to show.
+ * 当文章没有 `heroImage` 时，直接返回 `false`。
  */
 export function shouldShowHero(post: Post): boolean {
   if (!post.data.heroImage) return false;
   return post.data.showFeaturedImage ?? SITE.showFeaturedImages;
 }
 
-/** The hero image source URL/path for a post (or undefined). */
+/** 获取文章 hero image 的源 URL/路径；没有则返回 `undefined`。 */
 export function heroImageSrc(post: Post): string | undefined {
   const img = post.data.heroImage;
   if (!img) return undefined;
   let src: string | undefined;
   if (typeof img === 'string') src = img;
-  // Imported asset (ImageMetadata): unwrap to its public URL.
+  // 如果是导入资源（ImageMetadata），取出它的公开 URL。
   else if (typeof img === 'object' && 'src' in (img as Record<string, unknown>)) {
     src = (img as { src: string }).src;
   }
   if (!src) return undefined;
-  // Prefix the configured base for absolute paths into /public.
+  // 对指向 /public 的绝对路径补上配置里的 base 前缀。
   return src.startsWith('/') && !src.startsWith('//') ? withBase(src) : src;
 }
 
 /**
- * The raw hero image, suitable for passing straight to `<SmartImage>`.
- * Preserves the `ImageMetadata` shape (so the image pipeline can use
- * intrinsic dimensions) for assets imported via the `image()` schema,
- * and prefixes `withBase()` only on plain `/public/...` strings.
+ * 获取原始 hero image，可直接传给 `<SmartImage>`。
+ * 对通过 `image()` schema 导入的资源，会保留 `ImageMetadata` 结构，
+ * 这样图片管线仍能使用其固有尺寸；对于普通 `/public/...` 字符串，
+ * 则只补上 `withBase()`。
  */
 export function heroImage(post: Post): ImageMetadata | string | undefined {
   const img = post.data.heroImage;
@@ -224,7 +224,7 @@ export function heroImage(post: Post): ImageMetadata | string | undefined {
   return img as ImageMetadata;
 }
 
-/** Slugify a tag/category for use in URLs. */
+/** 将 tag/category 转成可用于 URL 的 slug。 */
 export function slugify(value: string): string {
   return value
     .toLowerCase()
@@ -234,14 +234,14 @@ export function slugify(value: string): string {
     .replace(/^-+|-+$/g, '');
 }
 
-/** Build the URL for a tag listing page in a given locale. */
+/** 为指定 locale 生成 tag 列表页 URL。 */
 export function tagPath(locale: Locale, tag: string): string {
   const slug = slugify(tag);
   const path = locale === SITE.defaultLocale ? `/tags/${slug}/` : `/${locale}/tags/${slug}/`;
   return withBase(path);
 }
 
-/** Build the URL for a category listing page in a given locale. */
+/** 为指定 locale 生成 category 列表页 URL。 */
 export function categoryPath(locale: Locale, category: string): string {
   const slug = slugify(category);
   const path =

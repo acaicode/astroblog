@@ -18,24 +18,24 @@ interface Props {
   title?: string;
   description?: string;
   ogImage?: string;
-  /** Logical path WITHOUT locale prefix (used for hreflang). */
+  /** 不带 locale 前缀的逻辑路径（用于 hreflang）。 */
   pathWithoutLocale?: string;
   type?: 'website' | 'article';
   publishedTime?: Date;
   modifiedTime?: Date;
   tags?: string[];
-  /** Hide the right panel (e.g. on post pages where TOC takes its place). */
+  /** 是否隐藏右侧面板，例如文章页由 TOC 占据该位置时。 */
   hidePanel?: boolean;
-  /** Constrain main content width (used by Pages like About/404). */
+  /** 是否限制主内容宽度，常用于 About/404 等页面。 */
   narrow?: boolean;
-  /** Breadcrumb segments shown in the topbar. */
+  /** 显示在 topbar 中的面包屑片段。 */
   crumbs?: Array<{ label: string; href?: string }>;
-  /** Pre-built SEO meta override. */
+  /** 预先构建好的 SEO meta 覆盖项。 */
   seo?: SeoMeta;
   /**
-   * Locales for which a translation of the current page actually
-   * exists. Used to limit the language switcher to working links and
-   * to scope hreflang alternates. Defaults to all `SITE.locales`.
+   * 当前页面实际存在翻译版本的 locale 列表。
+   * 用于限制语言切换器只显示可用链接，并控制 hreflang alternates 的范围。
+   * 默认为全部 `SITE.locales`。
    */
   availableLocales?: readonly Locale[];
 }
@@ -99,12 +99,12 @@ const meta: SeoMeta =
       href={withBase('/fr/rss.xml')}
     />
     <SEO meta={meta} />
-    {/* Custom fonts configured via Astro Fonts API */}
+    {/* 通过 Astro Fonts API 配置的自定义字体 */}
     <Font cssVariable="--font-source-sans-3" />
     <Font cssVariable="--font-lato" />
     <Font cssVariable="--font-jetbrains-mono" preload />
     <ClientRouter />
-    {/* Apply persisted theme as early as possible to avoid FOUC. */}
+    {/* 尽早应用持久化主题，避免出现 FOUC。 */}
     <script is:inline>
       (function () {
         function applyTheme() {
@@ -120,7 +120,7 @@ const meta: SeoMeta =
           }
         }
         applyTheme();
-        // Re-apply after view transitions swap in a fresh <html data-theme>.
+        // 在 view transitions 替换出新的 <html data-theme> 后重新应用一次。
         document.addEventListener('astro:after-swap', applyTheme);
       })();
     </script>

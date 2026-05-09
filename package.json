@@ -2,7 +2,7 @@
   "name": "peaceful-parallax",
   "version": "0.1.0",
   "type": "module",
-  "description": "A Chirpy-inspired, single-template, multilingual Astro v6 theme with Tailwind v4, daisyUI, MDX, Pagefind, and Giscus.",
+  "description": "A Chirpy-inspired, single-template, multilingual Astro v6 theme with Tailwind v4, daisyUI, MDX, Pagefind, and Twikoo.",
   "license": "MIT",
   "engines": {
     "bun": ">=1.1.0"
@@ -73,7 +73,7 @@
     "daisyui",
     "mdx",
     "pagefind",
-    "giscus",
+    "twikoo",
     "i18n",
     "blog"
   ]

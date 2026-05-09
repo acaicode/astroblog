@@ -1,7 +1,7 @@
 ---
 /**
- * Chirpy-style topbar: hamburger (mobile only) | breadcrumb | site title (mobile) | search
- * Sits inside the main column, below the header.
+ * Chirpy 风格的 topbar：hamburger（仅移动端）| breadcrumb | site title（移动端）| search。
+ * 它位于主内容列内部，在 header 下方。
  */
 import { SITE, type Locale } from '../config';
 import { useTranslations, localizedPath } from '../i18n/utils';
@@ -12,13 +12,13 @@ import LanguageSwitcher from './islands/LanguageSwitcher.astro';
 interface Props {
   locale: Locale;
   /**
-   * Breadcrumb segments. The last segment is treated as the current page.
-   * Pass [] to show only "Home".
+   * 面包屑片段。最后一段会被视为当前页面。
+   * 传入 `[]` 时只显示 "Home"。
    */
   crumbs?: Array<{ label: string; href?: string }>;
   /**
-   * Locales for which a translation actually exists. Forwarded to the
-   * language switcher so it only links to working pages.
+   * 当前页面实际存在翻译版本的 locale。
+   * 会传给语言切换器，确保它只链接到有效页面。
    */
   availableLocales?: readonly Locale[];
 }
@@ -63,7 +63,7 @@ const home = localizedPath('/', locale);
       </ol>
     </nav>
 
-    {/* Mobile site title */}
+    {/* 移动端站点标题 */}
     <a href={home} class="ml-1 truncate text-base font-semibold sm:hidden" aria-label={SITE.title}>
       {SITE.title}
     </a>

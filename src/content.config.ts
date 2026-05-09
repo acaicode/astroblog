@@ -1,14 +1,14 @@
 /**
- * Content Collections (Astro v6 loader API).
+ * Content Collections（Astro v6 loader API）。
  *
- * Folder convention: `src/content/<collection>/<locale>/**`
+ * 目录约定：`src/content/<collection>/<locale>/**`
  *  - posts/en/**  -> EN posts
  *  - posts/fr/**  -> FR posts
- *  - pages/en/**  -> EN static pages (about, etc.)
- *  - pages/fr/**  -> FR static pages
+ *  - pages/en/**  -> EN 静态页面（about 等）
+ *  - pages/fr/**  -> FR 静态页面
  *
- * The locale is derived from the file path so authors do not need to set it
- * manually (but they may override it in frontmatter).
+ * locale 会从文件路径推导出来，因此作者通常不需要手动填写，
+ * 但也可以在 frontmatter 里覆盖。
  */
 
 import { defineCollection, type SchemaContext } from 'astro:content';
@@ -20,17 +20,16 @@ import { SITE } from './config';
 const localeEnum = z.enum(SITE.locales as unknown as [string, ...string[]]);
 
 /**
- * Build the post / page frontmatter schema.
+ * 构建文章 / 页面使用的 frontmatter schema。
  *
- * `heroImage` accepts THREE shapes:
- *   1. An imported asset via `image()` — a path RELATIVE TO THE
- *      MARKDOWN FILE pointing into `src/assets/...`. Astro resolves
- *      it through its image pipeline (WebP, responsive `srcset`,
- *      width/height inferred). This is the recommended option.
- *   2. A public path (e.g. `/images/foo.jpg`) — copied as-is, NOT
- *      optimized.
- *   3. An external URL (https://…) — optimized at build if the host
- *      is allow-listed in `image.remotePatterns` in `astro.config.mjs`.
+ * `heroImage` 支持三种形式：
+ *   1. 通过 `image()` 导入的资源：路径相对当前 Markdown 文件，
+ *      指向 `src/assets/...`。Astro 会通过图片管线处理它，
+ *      包括 WebP、响应式 `srcset`、自动推断宽高。这是推荐方式。
+ *   2. public 路径（例如 `/images/foo.jpg`）：原样复制，不做优化。
+ *   3. 外部 URL（https://...）：只有当 host 被加入
+ *      `astro.config.mjs` 的 `image.remotePatterns` 白名单时，
+ *      才会在构建时参与优化。
  */
 const baseFrontmatter = ({ image }: SchemaContext) =>
   z.object({
@@ -42,31 +41,31 @@ const baseFrontmatter = ({ image }: SchemaContext) =>
     categories: z.array(z.string()).default([]),
     draft: z.boolean().default(false),
     heroImage: z.union([image(), z.string()]).optional(),
-    /** Optional alt-text for the hero/featured image. */
+    /** hero/featured image 的可选 alt 文本。 */
     heroImageAlt: z.string().optional(),
-    /** Per-post override of SITE.showFeaturedImages (cards + hero). */
+    /** 单篇文章覆盖 SITE.showFeaturedImages（卡片 + hero）。 */
     showFeaturedImage: z.boolean().optional(),
-    /** Per-post override of SITE.dynamicPostCardHeight on listing cards. */
+    /** 单篇文章覆盖 SITE.dynamicPostCardHeight。 */
     dynamicPostCardHeight: z.boolean().optional(),
     canonicalURL: z.url().optional(),
     comments: z.boolean().optional(),
     toc: z.boolean().default(true),
-    /** Pin to top of listings. */
+    /** 置顶到列表顶部。 */
     pinned: z.boolean().default(false),
     /**
-     * Opt in to LaTeX math rendering (KaTeX). When `true`, the layout
-     * loads `katex.min.css` only on this page so the stylesheet stays
-     * off posts/pages that don't use math.
+     * 是否启用 LaTeX 数学公式渲染（KaTeX）。
+     * 为 `true` 时，layout 只会在当前页面加载 `katex.min.css`，
+     * 避免不需要数学公式的文章也引入这份样式。
      */
     math: z.boolean().default(false),
-    /** Optional locale override; otherwise inferred from path. */
+    /** 可选 locale 覆盖；默认从路径推导。 */
     lang: localeEnum.optional(),
     /**
-     * Maps translated variants together. Posts that share a translationKey
-     * across locales are considered translations of each other and the
-     * language switcher will jump between them on the same article.
+     * 用于把不同语言版本的文章关联起来。多个 locale 共享同一个
+     * `translationKey` 时，会被视为互译文章，语言切换器会跳转到
+     * 对应的同篇文章。
      *
-     * If omitted, falls back to the file slug (relative to the locale folder).
+     * 如果省略，则回退到文件 slug（相对于 locale 目录）。
      */
     translationKey: z.string().optional(),
   });
@@ -90,7 +89,7 @@ const pages = defineCollection({
     baseFrontmatter(ctx)
       .partial({ pubDate: true })
       .extend({
-        /** Pages don't paginate or appear in archives. */
+        /** Pages 不参与分页，也不会出现在 archives。 */
         showInNav: z.boolean().default(false),
       }),
 });

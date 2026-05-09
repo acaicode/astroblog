@@ -35,8 +35,7 @@ calme comptent plus que les animations et les espaces publicitaires.
 - **Recherche instantanée** — [Pagefind](https://pagefind.app/) génère
   un index statique à la compilation ; l'overlay de recherche se
   charge à la demande.
-- **Commentaires** — intégration [Giscus](https://giscus.app/) basée
-  sur les Discussions GitHub, avec désactivation par article.
+- **Commentaires** — intégration Twikoo, avec désactivation par article.
 - **Navigation fluide** — transitions de vue Astro avec un fondu
   discret et un repli respectant `prefers-reduced-motion`.
 - **SEO d'emblée** — OpenGraph, cartes Twitter, flux RSS par locale,
@@ -50,7 +49,7 @@ calme comptent plus que les animations et les espaces publicitaires.
   `@tailwindcss/vite`, avec [**daisyUI v5**](https://daisyui.com/) pour
   le théming
 - [**Pagefind**](https://pagefind.app/) pour la recherche statique
-- [**Giscus**](https://giscus.app/) pour les commentaires
+- [**Twikoo**](https://twikoo.js.org/) pour les commentaires
 - [**Shiki**](https://shiki.style/), [**KaTeX**](https://katex.org/),
   et les icônes [**Lucide**](https://lucide.dev/)
 
@@ -59,7 +58,7 @@ calme comptent plus que les animations et les espaces publicitaires.
 La quasi-totalité de la configuration passe par un seul fichier typé
 [`src/config.ts`](https://github.com/) — titre du site, auteur,
 navigation, liens sociaux, articles par page, locale par défaut,
-identifiants Giscus, et indicateurs de fonctionnalités. Redémarrez
+paramètres Twikoo, et indicateurs de fonctionnalités. Redémarrez
 `bun run dev` après l'avoir modifié.
 
 Les nouveaux articles vont dans `src/content/posts/<locale>/`. Appariez

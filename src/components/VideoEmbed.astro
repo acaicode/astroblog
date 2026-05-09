@@ -1,25 +1,25 @@
 ---
 /**
- * Responsive video embed for MDX content. Supports YouTube, Vimeo,
- * and generic iframe sources. Use as:
+ * 面向 MDX 内容的响应式视频嵌入组件。
+ * 支持 YouTube、Vimeo 以及通用 iframe 来源。用法如下：
  *
  *   <VideoEmbed src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="My video" />
  *   <VideoEmbed src="https://player.vimeo.com/video/123456789" title="Vimeo clip" />
  *
- * Or use the shorthand `id` prop for YouTube:
+ * 也可以对 YouTube 使用简写版 `id` 参数：
  *   <VideoEmbed platform="youtube" id="dQw4w9WgXcQ" title="My video" />
  */
 
 interface Props {
-  /** Full iframe src URL. Takes priority over platform+id. */
+  /** 完整的 iframe src URL，优先级高于 platform+id。 */
   src?: string;
-  /** Video platform for shorthand usage with `id`. */
+  /** 配合 `id` 使用的短写视频平台。 */
   platform?: 'youtube' | 'vimeo';
-  /** Video ID (used with `platform`). */
+  /** 视频 ID（与 `platform` 搭配使用）。 */
   id?: string;
-  /** Accessible title for the iframe. */
+  /** iframe 的无障碍标题。 */
   title: string;
-  /** Optional caption displayed below the video. */
+  /** 显示在视频下方的可选说明文字。 */
   caption?: string;
 }
 

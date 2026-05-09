@@ -35,7 +35,7 @@ Variables importantes :
 | `SITE_URL`             | Votre URL de production (ex. `https://monblog.com`)          |
 | `BASE_PATH`            | `/<nom-du-repo>` pour GitHub Pages, vide sinon               |
 | `PUBLIC_GITHUB_HANDLE` | Affiche l'icône GitHub dans la barre latérale                |
-| `PUBLIC_GISCUS_*`      | Active les commentaires Giscus ([guide](https://giscus.app)) |
+| Commentaires           | Configurez Twikoo dans `src/config.ts`                       |
 
 ## Rédiger des articles
 

@@ -31,8 +31,7 @@ than animations and ad slots.
 - **LaTeX math** — opt-in KaTeX support per post via `math: true`.
 - **Instant search** — [Pagefind](https://pagefind.app/) generates a
   static search index at build time; the search overlay loads on demand.
-- **Comments** — [Giscus](https://giscus.app/) integration backed by
-  GitHub Discussions, with per-post opt-out.
+- **Comments** — Twikoo integration, with per-post opt-out.
 - **Smooth navigation** — Astro view transitions with a subtle fade and
   motion-reduced fallback for accessibility.
 - **SEO out of the box** — OpenGraph, Twitter cards, RSS feeds per locale,
@@ -45,7 +44,7 @@ than animations and ad slots.
 - [**Tailwind CSS v4**](https://tailwindcss.com/) via the `@tailwindcss/vite`
   plugin, with [**daisyUI v5**](https://daisyui.com/) for theming
 - [**Pagefind**](https://pagefind.app/) for static search
-- [**Giscus**](https://giscus.app/) for comments
+- [**Twikoo**](https://twikoo.js.org/) for comments
 - [**Shiki**](https://shiki.style/), [**KaTeX**](https://katex.org/), and
   [**Lucide**](https://lucide.dev/) icons
 
@@ -53,7 +52,7 @@ than animations and ad slots.
 
 Almost everything is wired through a single typed config file at
 [`src/config.ts`](https://github.com/) — site title, author, navigation,
-social links, posts-per-page, default locale, Giscus credentials, and
+social links, posts-per-page, default locale, Twikoo settings, and
 feature flags. Restart `bun run dev` after editing it.
 
 New posts go in `src/content/posts/<locale>/`. Pair translations by

@@ -3,10 +3,10 @@ import BaseLayout from './BaseLayout.astro';
 import PostNav from '../components/PostNav.astro';
 import SmartImage from '../components/SmartImage.astro';
 import TableOfContents from '../components/islands/TableOfContents.astro';
-import Giscus from '../components/islands/Giscus.astro';
+import Twikoo from '../components/Twikoo.astro';
 import MathStyles from '../components/MathStyles.astro';
 import { Icon } from 'astro-icon/components';
-import { GISCUS, SITE, type Locale } from '../config';
+import { SITE, TWIKOO, type Locale } from '../config';
 import { useTranslations, stripLocale, formatDate, isoDate, localizedPath } from '../i18n/utils';
 import { readingTime } from '../utils/reading-time';
 import {
@@ -25,9 +25,9 @@ import type { MarkdownHeading } from 'astro';
 
 interface Props {
   post: Post;
-  /** Astro's `headings` array from `await render(post)`. */
+  /** 来自 `await render(post)` 的 `headings` 数组。 */
   headings: MarkdownHeading[];
-  /** Raw body string used for reading time. */
+  /** 用于计算阅读时长的原始正文字符串。 */
   body: string;
   prev?: Post;
   next?: Post;
@@ -38,16 +38,16 @@ const { post, headings, body, prev, next, locale } = Astro.props;
 const t = useTranslations(locale);
 const minutes = readingTime(body).minutes;
 
-// Translation siblings (used by language switcher links).
+// 收集互译文章链接，供语言切换器使用。
 const translations = await getTranslations(post);
 const translationLinks: Partial<Record<Locale, string>> = {};
 for (const [lang, p] of Object.entries(translations)) {
   if (p) translationLinks[lang as Locale] = postPath(p);
 }
-// Locales that actually have a published version of this post.
+// 当前文章真实存在已发布版本的 locale。
 const availableLocales = (Object.keys(translationLinks) as Locale[]).sort();
 
-const commentsEnabled = post.data.comments !== false && GISCUS.enabled;
+const commentsEnabled = post.data.comments !== false && TWIKOO.enabled;
 const pathWithoutLocale = stripLocale(Astro.url.pathname);
 
 const heroSrc = heroImageSrc(post);
@@ -59,8 +59,8 @@ const articleClass = SITE.boxedArticles
   ? 'border-base-300 bg-base-100 rounded-md border px-5 py-8 sm:px-8 sm:py-10'
   : 'px-1 py-6 sm:px-2 sm:py-8';
 
-// Use hero image for OG if available, otherwise fallback to the generated OG image
-// (unless Auto-OG is disabled globally or skipped in CI).
+// 优先使用 hero image 作为 OG；如果没有，则回退到自动生成的 OG 图片。
+// 但当全局关闭 Auto-OG 或在 CI 中显式跳过时，不会生成回退图。
 const ogSlug = postSlug(post);
 const ogPrefix = locale === SITE.defaultLocale ? '' : `${locale}/`;
 const generatedOgPath = `/og/${ogPrefix}${ogSlug}.png`;
@@ -196,7 +196,7 @@ const crumbs = [
 
     {
       commentsEnabled ? (
-        <Giscus locale={locale} />
+        <Twikoo />
       ) : (
         post.data.comments === false && (
           <p class="text-base-content/70 mt-10 text-sm">{t('post.commentsDisabled')}</p>
@@ -206,7 +206,7 @@ const crumbs = [
   </article>
 </BaseLayout>
 
-{/* Translation links exposed for the LanguageSwitcher to read at runtime */}
+{/* 暴露给 LanguageSwitcher 在运行时读取的翻译链接 */}
 <script is:inline define:vars={{ links: translationLinks }}>
   window.__chirpyTranslations = links;
 </script>

@@ -19,17 +19,17 @@ export interface SiteConfig {
   autoOgImage: boolean;
   showPrivacyPolicy: boolean;
   footer: {
-    /** Optional full override for the left footer line. Supports {year} and {author}. */
+    /** 左侧页脚文案的完整覆盖，可使用 {year} 和 {author}。 */
     leftText?: string;
-    /** Optional custom text shown before the theme link on the right footer line. */
+    /** 右侧页脚主题链接前显示的自定义文案。 */
     rightText?: string;
-    /** Whether to show the Privacy Policy link in the footer. */
+    /** 是否在页脚显示 Privacy Policy 链接。 */
     showPrivacyPolicy?: boolean;
-    /** Whether to show theme credits in the footer right side. */
+    /** 是否在页脚右侧显示主题署名。 */
     showThemeCredits?: boolean;
-    /** Theme label text used by the right footer link. */
+    /** 页脚右侧主题链接使用的显示文字。 */
     themeName: string;
-    /** Theme repository URL used by the right footer link. */
+    /** 页脚右侧主题仓库链接地址。 */
     themeUrl: string;
   };
   url: string;
@@ -39,11 +39,11 @@ export interface SiteConfig {
 }
 
 export interface NavItem {
-  /** Unique key matching i18n.ts entries. */
+  /** 与 i18n.ts 文案项对应的唯一 key。 */
   key: string;
-  /** Path WITHOUT leading locale prefix. The renderer adds it. */
+  /** 不带 locale 前缀的路径，渲染时会自动补上。 */
   href: string;
-  /** Optional icon name (e.g. "home", "tags"). */
+  /** 可选图标名，例如 `home`、`tags`。 */
   icon?: string;
 }
 
@@ -53,27 +53,15 @@ export interface SocialLink {
   icon: string;
 }
 
-export interface GiscusConfig {
-  /** Master switch. */
+export interface TwikooConfig {
+  /** 文章评论总开关。 */
   enabled: boolean;
-  /** GitHub repo (e.g. `user/repo`). */
-  repo: string;
-  /** Repo ID (from giscus.app). */
-  repoId: string;
-  /** Discussion category. */
-  category: string;
-  /** Category ID. */
-  categoryId: string;
-  /** Discussion mapping strategy. */
-  mapping: 'pathname' | 'url' | 'title' | 'og:title' | 'specific' | 'number';
-  /** Strict matching. */
-  strict: '0' | '1';
-  /** Enable reactions on the main post. */
-  reactionsEnabled: '0' | '1';
-  /** Emit metadata events. */
-  emitMetadata: '0' | '1';
-  /** Comment input position. */
-  inputPosition: 'top' | 'bottom';
-  /** Lazy load. */
-  loading: 'lazy' | 'eager';
+  /** Twikoo 后端地址，例如 Netlify Function URL。 */
+  envId: string;
+  /** Twikoo 挂载点使用的 DOM id。 */
+  elementId: string;
+  /** Twikoo 客户端语言。 */
+  lang: string;
+  /** 通过 jsDelivr 加载的 Twikoo 浏览器端版本。 */
+  version: string;
 }

@@ -1,9 +1,9 @@
 ---
 /**
- * Right-hand panel shown on XL screens, mirrors Chirpy's "Recently Updated"
- * + "Trending Tags" widgets.
+ * 仅在 XL 屏显示的右侧面板，对应 Chirpy 风格中的
+ * "Recently Updated" 和 "Trending Tags" 模块。
  *
- * On post pages we replace this with the article TOC (handled by PostLayout).
+ * 在文章页中，这里会被文章 TOC 替换（由 PostLayout 负责）。
  */
 import type { Locale } from '../config';
 import { getPosts, getTagsWithCount, postPath, tagPath } from '../utils/posts';
@@ -33,7 +33,7 @@ const trending = tags.slice(0, 8);
     recent.length > 0 && (
       <section class="mb-8">
         <h2 class="text-base-content/70 mb-3 text-xs font-bold tracking-[0.1em] uppercase">
-          {locale === 'fr' ? 'Mises à jour récentes' : 'Recently Updated'}
+          {locale === 'fr' ? 'Mises 脿 jour r茅centes' : 'Recently Updated'}
         </h2>
         <ul class="chirpy-aside-list">
           {recent.map((post) => (
@@ -52,7 +52,7 @@ const trending = tags.slice(0, 8);
     trending.length > 0 && (
       <section>
         <h2 class="text-base-content/70 mb-3 text-xs font-bold tracking-[0.1em] uppercase">
-          {locale === 'fr' ? 'Étiquettes en vogue' : 'Trending Tags'}
+          {locale === 'fr' ? '脡tiquettes en vogue' : 'Trending Tags'}
         </h2>
         <div class="flex flex-wrap gap-2">
           {trending.map((tag) => (

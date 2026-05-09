@@ -1,22 +1,22 @@
 /**
- * Lightweight reading-time estimator. We avoid the full `reading-time` package
- * here because the post body is consumed via Astro's `render()` and we have
- * a numeric word count already.
+ * 轻量级 reading-time 估算器。
+ * 这里没有引入完整的 `reading-time` 包，因为文章正文已经通过
+ * Astro 的 `render()` 处理过，我们手头也已经有可用的词数统计。
  */
 
 const WORDS_PER_MINUTE = 220;
 
 export interface ReadingTime {
-  /** Whole minutes, minimum 1. */
+  /** 整分钟数，最少为 1。 */
   minutes: number;
-  /** Word count. */
+  /** 词数。 */
   words: number;
 }
 
 export function readingTime(text: string): ReadingTime {
   const words = text
-    .replace(/```[\s\S]*?```/g, ' ') // strip fenced code
-    .replace(/<[^>]+>/g, ' ') // strip html
+    .replace(/```[\s\S]*?```/g, ' ') // 去掉 fenced code
+    .replace(/<[^>]+>/g, ' ') // 去掉 HTML
     .replace(/\s+/g, ' ')
     .trim()
     .split(' ')

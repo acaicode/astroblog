@@ -1,12 +1,12 @@
 ---
-const envId = 'https://mongodzyb.netlify.app/.netlify/functions/twikoo';
-const el = 'tcomment';
-const lang = 'zh-CN';
+import { TWIKOO } from '../config';
+
+const { envId, elementId, lang, version } = TWIKOO;
 ---
 
-<div id={el} data-env-id={envId} data-el={el} data-lang={lang}></div>
+<div id={elementId} data-env-id={envId} data-el={elementId} data-lang={lang}></div>
 
-<script is:inline define:vars={{ el }}>
+<script is:inline define:vars={{ el: elementId, version }}>
   const container = document.getElementById(el);
   if (!container) {
     console.warn('Twikoo container not found:', el);
@@ -17,7 +17,7 @@ const lang = 'zh-CN';
 
     if (!window.twikooInitialized) {
       const script = document.createElement('script');
-      script.src = 'https://cdn.jsdelivr.net/npm/twikoo@1.7.9/dist/twikoo.min.js';
+      script.src = `https://cdn.jsdelivr.net/npm/twikoo@${version}/dist/twikoo.min.js`;
       script.async = true;
 
       script.onload = () => {

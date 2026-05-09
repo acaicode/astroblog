@@ -1,14 +1,14 @@
 import avatarImg from './assets/images/site/avatar.svg';
 import ogDefaultImg from './assets/images/site/og-default.svg';
-import type { SiteConfig, NavItem, SocialLink, GiscusConfig } from './types/config';
+import type { SiteConfig, NavItem, SocialLink, TwikooConfig } from './types/config';
 
 /**
- * Global site + theme configuration.
- * Edit values here to rebrand the theme. All values are typed and consumed
- * across layouts, components, RSS, sitemap, and SEO.
+ * 全局站点与主题配置。
+ * 在这里修改即可完成主题定制。所有字段都有类型约束，
+ * 并会被 layouts、components、RSS、sitemap 和 SEO 共用。
  */
 
-// Export imported site images for use in components
+// 导出站点图片资源，供组件复用
 export const SITE_IMAGES = {
   avatar: avatarImg,
   ogDefault: ogDefaultImg,
@@ -18,12 +18,11 @@ export const locales = ['en', 'fr'] as const;
 export type Locale = (typeof locales)[number];
 
 /**
- * Author + social handles. Filled in from env vars (see `.env.example`)
- * so identifiers never need to be hard-coded into source.
+ * 作者与社交账号配置。优先从 env vars 读取，
+ * 这样就不需要把这些标识硬编码进源码里。
  *
- * Leave any handle as an empty string to drop it from the sidebar
- * automatically — the entry won't render and no broken `your-handle`
- * URL is exposed.
+ * 某个 handle 留空时，会自动从侧边栏隐藏对应入口，
+ * 也不会暴露无效的 `your-handle` URL。
  */
 const GITHUB_HANDLE = import.meta.env.PUBLIC_GITHUB_HANDLE ?? '';
 const GITHUB_REPO = import.meta.env.PUBLIC_GITHUB_REPO ?? 'chirping-astro';
@@ -32,10 +31,10 @@ const CONTACT_EMAIL = import.meta.env.PUBLIC_CONTACT_EMAIL ?? '';
 const THEME_REPO_URL = 'https://github.com/kannansuresh/chirping-astro';
 
 /**
- * Public GitHub coordinates of the deployed source. Useful for custom links
- * and integrations that need a repository URL. When
- * `PUBLIC_GITHUB_HANDLE` is unset, `url` falls back to a safe default so
- * generated links never point at a 404.
+ * 当前部署源码对应的公开 GitHub 仓库信息。
+ * 适用于需要仓库 URL 的自定义链接或集成。
+ * 当 `PUBLIC_GITHUB_HANDLE` 未设置时，`url` 会回退到安全默认值，
+ * 避免生成的链接直接指向 404。
  */
 export const REPO = {
   handle: GITHUB_HANDLE,
@@ -45,72 +44,71 @@ export const REPO = {
 
 export const SITE: SiteConfig = {
   // ==========================================
-  // ✅ SAFE TO EDIT (Content & Presentation)
+  // 可安全修改（内容与展示）
   // ==========================================
 
-  /** Default site title used as homepage <title> and meta. */
+  /** 默认站点标题，用于首页 `<title>` 和 meta。 */
   title: '我的博客',
-  /** Site tagline / description. */
-  description:
-    '暂时还在初始化中',
-  /** Author/handle shown in footer + meta. */
+  /** 站点副标题 / 描述。 */
+  description: '暂时还在初始化中',
+  /** 显示在页脚和 meta 中的作者信息。 */
   author: {
     name: '朱轶博',
     url: GITHUB_HANDLE ? `https://github.com/${GITHUB_HANDLE}` : undefined,
     avatar: avatarImg,
     bio: '开发者',
   },
-  /** Default OG image. */
+  /** 默认 OG image。 */
   defaultOgImage: ogDefaultImg.src,
-  /** Number of posts per page on listings. */
+  /** 列表页每页显示的文章数量。 */
   postsPerPage: 8,
-  /** Display ISO 8601 date format if true, otherwise locale-aware. */
+  /** 为 true 时显示 ISO 8601 日期，否则按 locale 格式化。 */
   isoDates: false,
-  /** Site-wide default for whether posts should display their featured image. */
+  /** 全站默认是否显示文章特色图。 */
   showFeaturedImages: true,
-  /** Wrap the article body of posts and pages in a bordered, card-like container. */
+  /** 是否给文章与页面正文加带边框的卡片式容器。 */
   boxedArticles: false,
-  /** Allow listing cards to grow when title/description content is longer. */
+  /** 当标题或描述较长时，是否允许列表卡片自适应增高。 */
   dynamicPostCardHeight: false,
-  /** Automatically generate Open Graph images for posts that don't have a `heroImage`. */
+  /** 对没有 `heroImage` 的文章自动生成 Open Graph 图片。 */
   autoOgImage: true,
-  /** Show a link to the Privacy Policy page in the footer. */
+  /** 是否在页脚显示 Privacy Policy 链接。 */
   showPrivacyPolicy: true,
-  /** Footer text/link controls. */
+  /** 页脚文字与链接控制。 */
   footer: {
     /**
-     * Optional full override for the left footer line. Supports {year} and {author}.
-     * Default when undefined: "© {year} {author}. All rights reserved." (+ Privacy Policy link if enabled).
+     * 左侧页脚文案的完整覆盖，可使用 {year} 和 {author}。
+     * 未设置时使用默认文案，并在启用时附带 Privacy Policy 链接。
      */
     leftText: undefined,
     /**
-     * Optional custom text before the theme link on the right footer line.
-     * Default when undefined: "Powered by Astro · Theme <themeName>".
+     * 右侧页脚主题链接前的自定义文案。
+     * 未设置时使用默认文案 "Powered by Astro · Theme <themeName>"。
      */
     rightText: undefined,
-    /** Whether to show the Privacy Policy link in the footer. */
+    /** 是否在页脚显示 Privacy Policy 链接。 */
     showPrivacyPolicy: true,
-    /** Whether to show theme credits in the footer right side. Theme <themeName> */
+    /** 是否在页脚右侧显示主题署名 Theme <themeName>。 */
     showThemeCredits: true,
-    /** Label for the theme repository link in the right footer line. */
+    /** 页脚右侧主题仓库链接的显示文字。 */
     themeName: 'Chirping Astro',
-    /** Default upstream theme repository. */
+    /** 默认上游主题仓库地址。 */
     themeUrl: THEME_REPO_URL,
   },
 
   // ==========================================
-  // ❗ CAN BREAK THINGS (EDIT WITH CAUTION)
+  // 谨慎修改（可能影响功能）
   // ==========================================
 
-  /** Public URL of the deployed site, no trailing slash. Breaks SEO/RSS if incorrect. */
-  // `||` (not `??`) so an explicitly empty `SITE_URL=` in `.env` also
-  // falls back to the default. Astro requires `site` to be a valid URL.
+  /** 部署后的公开站点 URL，不带尾部斜杠；错误会影响 SEO/RSS。 */
+  // 这里用 `||` 而不是 `??`，这样即使 `.env` 里显式写了空的
+  // `SITE_URL=`，也会回退到默认值。Astro 要求 `site` 必须是合法 URL。
   url: import.meta.env.SITE_URL || 'https://chirping-astro.example.com',
-  /** Supported locales. Changing this requires adding/removing locale folders, content, and i18n entries. */
+  /** 支持的 locale。修改后需要同步调整目录、内容和 i18n 配置。 */
   locales: locales,
-  /** Default locale. Changing this is a breaking, atomic, multi-file operation. */
+  /** 默认 locale。修改它通常需要一次性联动多个文件。 */
   defaultLocale: 'en',
-  /** Show the language switcher and link to translated pages. */
+  /** 是否显示语言切换器并链接到翻译页面。 */
   multilingual: true,
 };
 
@@ -123,13 +121,13 @@ export const NAV: readonly NavItem[] = [
 ] as const;
 
 /**
- * SOCIALS is built from the env-driven handles above so users only edit
- * one place (`.env` or the constants at the top of this file). Empty
- * handles are filtered out automatically — the icon simply won't appear
- * in the sidebar. RSS is always present.
+ * SOCIALS 会基于上面的 env handles 自动生成，
+ * 这样用户只需要改一个地方（`.env` 或本文件顶部常量）。
+ * 某个 handle 为空时会自动过滤，对应图标不会出现在侧边栏。
+ * RSS 会始终保留。
  *
- * Need a social network the theme doesn't ship with? Just append a
- * literal entry below — the type is `SocialLink`.
+ * 如果需要主题未内置的社交平台，直接在下面追加一项即可，
+ * 类型使用 `SocialLink`。
  */
 export const SOCIALS: readonly SocialLink[] = [
   GITHUB_HANDLE && {
@@ -151,33 +149,25 @@ export const SOCIALS: readonly SocialLink[] = [
 ].filter(Boolean) as SocialLink[];
 
 /**
- * Giscus comments. Set `enabled: false` to globally disable. Individual
- * posts may opt out via frontmatter `comments: false`.
- *
- * Generate values at https://giscus.app and either set them here or
- * (recommended) provide them via PUBLIC_GISCUS_* env vars at build time.
+ * Twikoo 评论配置。将 `enabled` 设为 `false`
+ * 可全局关闭评论；单篇文章仍可通过 frontmatter 的
+ * `comments: false` 单独关闭。
  */
-export const GISCUS: GiscusConfig = {
-  enabled: (import.meta.env.PUBLIC_GISCUS_ENABLED ?? 'false') === 'true',
-  repo: import.meta.env.PUBLIC_GISCUS_REPO ?? '',
-  repoId: import.meta.env.PUBLIC_GISCUS_REPO_ID ?? '',
-  category: import.meta.env.PUBLIC_GISCUS_CATEGORY ?? 'Announcements',
-  categoryId: import.meta.env.PUBLIC_GISCUS_CATEGORY_ID ?? '',
-  mapping: 'pathname',
-  strict: '0',
-  reactionsEnabled: '1',
-  emitMetadata: '0',
-  inputPosition: 'bottom',
-  loading: 'lazy',
+export const TWIKOO: TwikooConfig = {
+  enabled: true,
+  envId: 'https://mongodzyb.netlify.app/.netlify/functions/twikoo',
+  elementId: 'tcomment',
+  lang: 'zh-CN',
+  version: '1.7.9',
 };
 
 /**
- * Pagefind runtime settings. The index itself is generated by `bun run pagefind`
- * after `astro build` and written to `dist/_pagefind/`.
+ * Pagefind 运行时设置。索引会在 `astro build` 之后
+ * 通过 `bun run pagefind` 生成到 `dist/_pagefind/`。
  */
 export const PAGEFIND = {
-  /** Public path where the Pagefind bundle is served. */
+  /** Pagefind bundle 对外服务的路径。 */
   bundlePath: '/_pagefind/',
-  /** Number of results to render per locale. */
+  /** 每个 locale 渲染的结果数量。 */
   pageSize: 10,
 } as const;
