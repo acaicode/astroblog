@@ -38,11 +38,11 @@ const groups = groupByYearMonth(posts, locale);
               <ul>
                 {yearPosts.map((p) => (
                   <li>
-                    <span class="day">
-                       {new Date(p.data.pubDate).getDate().toString().padStart(2, '0')}
-                    </span>
                     <span class="month">
                       {formatDate(p.data.pubDate, locale, { month: 'short' })}
+                    </span>
+                    <span class="day">
+                      {new Date(p.data.pubDate).getDate().toString().padStart(2, '0')}
                     </span>
                     <a href={postPath(p)}>{p.data.title}</a>
                   </li>
@@ -173,16 +173,17 @@ const groups = groupByYearMonth(posts, locale);
     top: 0;
     line-height: var(--tl-row-h);
   }
-  #archives .day {
-    left: 0.75rem;
-    font-variant-numeric: tabular-nums;
-    color: var(--color-base-content);
-  }
   #archives .month {
-    left: 2.5rem;
+    left: 0.75rem;
     font-size: 85%;
     color: color-mix(in oklch, var(--color-base-content) 60%, transparent);
     text-transform: capitalize;
+  }
+  #archives .day {
+    left: 2.5rem;
+    font-size: 85%;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-base-content);
   }
 
   /* Title flows at the padding edge (6.5rem = 104px), giving ~21px between
