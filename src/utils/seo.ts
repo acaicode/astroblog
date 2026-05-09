@@ -36,7 +36,7 @@ interface BuildSeoArgs {
 /** 构建 `<SEO />` 所消费的 SEO 数据块。 */
 export function buildSeo(args: BuildSeoArgs): SeoMeta {
   return {
-    title: args.title && args.title !== SITE.title ? `${args.title} 鈥?${SITE.title}` : SITE.title,
+    title: args.title && args.title !== SITE.title ? `${args.title} — ${SITE.title}` : SITE.title,
     description: args.description ?? SITE.description,
     canonical: new URL(args.fullPath, SITE.url).toString(),
     ogImage: new URL(withBase(args.ogImage ?? SITE.defaultOgImage), SITE.url).toString(),
