@@ -117,7 +117,7 @@ export const NAV: readonly NavItem[] = [
   { key: 'categories', href: '/categories', icon: 'lucide:layers' },
   { key: 'tags', href: '/tags', icon: 'lucide:tag' },
   // 暂时把归档archives隐藏掉，因为没有什么实际性作用
-  // { key: 'archives', href: '/archives', icon: 'lucide:archive' },
+  { key: 'archives', href: '/archives', icon: 'lucide:archive' },
   { key: 'about', href: '/about', icon: 'lucide:info' },
 ] as const;
 
