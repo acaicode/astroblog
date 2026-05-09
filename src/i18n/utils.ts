@@ -110,13 +110,13 @@ export function useTranslations(locale: Locale): (key: UIKey) => string {
  */
 export function formatDate(
   date: Date | string,
-  locale: Locale,
+  _locale: Locale,
   options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' },
 ): string {
   const d = typeof date === 'string' ? new Date(date) : date;
   if (Number.isNaN(d.getTime())) return '';
   if (SITE.isoDates) return d.toISOString().slice(0, 10);
-  const lang = locale === 'fr' ? 'fr-FR' : 'en-US';
+  const lang = 'zh-CN';
   return new Intl.DateTimeFormat(lang, options).format(d);
 }
 
@@ -166,21 +166,19 @@ export function canonicalUrl(pathname: string): string {
 /** 生成语言切换器显示用的友好标签。 */
 export function localeLabel(locale: Locale): string {
   switch (locale) {
-    case 'fr':
-      return 'Fran莽ais';
-    case 'en':
+    case 'zh':
+      return '中文';
     default:
-      return 'English';
+      return '中文';
   }
 }
 
 /** 用于 `<html lang>` 和日期格式化的 ISO BCP 47 语言标签。 */
 export function htmlLang(locale: Locale): string {
   switch (locale) {
-    case 'fr':
-      return 'fr-FR';
-    case 'en':
+    case 'zh':
+      return 'zh-CN';
     default:
-      return 'en-US';
+      return 'zh-CN';
   }
 }

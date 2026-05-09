@@ -14,7 +14,7 @@ export const SITE_IMAGES = {
   ogDefault: ogDefaultImg,
 } as const;
 
-export const locales = ['en', 'fr'] as const;
+export const locales = ['zh'] as const;
 export type Locale = (typeof locales)[number];
 
 /**
@@ -107,16 +107,17 @@ export const SITE: SiteConfig = {
   /** 支持的 locale。修改后需要同步调整目录、内容和 i18n 配置。 */
   locales: locales,
   /** 默认 locale。修改它通常需要一次性联动多个文件。 */
-  defaultLocale: 'en',
+  defaultLocale: 'zh',
   /** 是否显示语言切换器并链接到翻译页面。 */
-  multilingual: true,
+  multilingual: false,
 };
 
 export const NAV: readonly NavItem[] = [
   { key: 'home', href: '/', icon: 'lucide:home' },
   { key: 'categories', href: '/categories', icon: 'lucide:layers' },
   { key: 'tags', href: '/tags', icon: 'lucide:tag' },
-  { key: 'archives', href: '/archives', icon: 'lucide:archive' },
+  // 暂时把归档archives隐藏掉，因为没有什么实际性作用
+  // { key: 'archives', href: '/archives', icon: 'lucide:archive' },
   { key: 'about', href: '/about', icon: 'lucide:info' },
 ] as const;
 

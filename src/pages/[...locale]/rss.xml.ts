@@ -15,7 +15,7 @@ export const GET: APIRoute = async (context) => {
       site: siteWithBase,
       stylesheet: `${base}/rss/styles.xsl`,
       items: [],
-      customData: `<language>en-us</language>`,
+      customData: `<language>zh-cn</language>`,
     });
   }
 
@@ -36,7 +36,7 @@ export const GET: APIRoute = async (context) => {
       link: postPath(post),
       categories: [...post.data.tags, ...post.data.categories],
     })),
-    customData: `<language>en-us</language>`,
+    customData: `<language>zh-cn</language>`,
   });
 };
 

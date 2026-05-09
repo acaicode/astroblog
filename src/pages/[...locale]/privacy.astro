@@ -10,7 +10,7 @@ export function getStaticPaths() {
   }));
 }
 const { locale } = Astro.props;
-const entry = await getEntry('pages', `${locale}/privacy`);
+const entry = await getEntry('pages', 'privacy');
 if (!entry) return Astro.rewrite('/404');
 const { Content } = await render(entry);
 ---
