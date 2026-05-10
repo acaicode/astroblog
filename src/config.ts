@@ -156,7 +156,7 @@ export const SOCIALS: readonly SocialLink[] = [
  */
 export const TWIKOO: TwikooConfig = {
   enabled: true,
-  envId: 'https://mongodzyb.netlify.app/.netlify/functions/twikoo',
+  envId: 'https://cf-create-worker.2560001677zyb.workers.dev',
   elementId: 'tcomment',
   lang: 'zh-CN',
   version: '1.7.9',
