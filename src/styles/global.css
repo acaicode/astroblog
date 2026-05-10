@@ -838,3 +838,22 @@
   -webkit-appearance: none;
   appearance: none;
 }
+/* 彻底永久关闭搜索 */
+#header-search,
+.header-search,
+.header-search-trigger,
+.search-button,
+.search-modal,
+.search-wrapper,
+[class*="search"],
+[role*="search"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  position: absolute !important;
+  z-index: -9999 !important;
+}
