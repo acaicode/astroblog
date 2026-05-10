@@ -196,7 +196,7 @@ const crumbs = [
 
     {
       commentsEnabled ? (
-        <Twikoo />
+        <Twikoo client:onload />
       ) : (
         post.data.comments === false && (
           <p class="text-base-content/70 mt-10 text-sm">{t('post.commentsDisabled')}</p>
