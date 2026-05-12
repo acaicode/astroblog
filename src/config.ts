@@ -1,6 +1,7 @@
 import avatarImg from './assets/images/site/avatar.svg';
 import ogDefaultImg from './assets/images/site/og-default.svg';
 import type { SiteConfig, NavItem, SocialLink, TwikooConfig } from './types/config';
+import myImg from './assets/images/myself.jpg';
 
 /**
  * 全局站点与主题配置。
@@ -55,7 +56,7 @@ export const SITE: SiteConfig = {
   author: {
     name: '朱轶博',
     url: GITHUB_HANDLE ? `https://github.com/${GITHUB_HANDLE}` : undefined,
-    avatar: avatarImg,
+    avatar: myImg,
     bio: '开发者',
   },
   /** 默认 OG image。 */
